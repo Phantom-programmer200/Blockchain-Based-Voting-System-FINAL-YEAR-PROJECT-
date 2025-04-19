@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cast Your Vote | NaijaVote</title>
+    <link rel="stylesheet" href="static/vote.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.0.3/web3.min.js"></script>
+  </head>
+  <body>
+    <div class="vote-container">
+      <header class="vote-header">
+        <div class="header-content">
+          <h1><i class="fas fa-vote-yea"></i> Cast Your Vote</h1>
+          <p>Participate in Nigeria's secure blockchain election</p>
+        </div>
+        <div class="wallet-status" id="walletStatus">
+          <i class="fas fa-circle-notch fa-spin"></i>
+          <span>Wallet not connected</span>
+        </div>
+      </header>
+
+      <div class="vote-progress">
+        <div class="progress-steps">
+          <div class="step active">
+            <div class="step-number">1</div>
+            <div class="step-label">Connect Wallet</div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-label">Select Position</div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-label">Choose Candidate</div>
+          </div>
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-label">Confirm Vote</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="position-selector" id="positionSelector">
+        <h2><i class="fas fa-bullseye"></i> Select Election Position</h2>
+        <div class="position-grid" id="positionsContainer">
+          <!-- Positions will be loaded here -->
+          <div class="position-card skeleton">
+            <div class="position-image"></div>
+            <div class="position-info">
+              <div class="line"></div>
+              <div class="line short"></div>
+            </div>
+          </div>
+          <div class="position-card skeleton">
+            <div class="position-image"></div>
+            <div class="position-info">
+              <div class="line"></div>
+              <div class="line short"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="candidate-selection hidden" id="candidateSelection">
+        <div class="selection-header">
+          <h2 id="selectedPositionTitle">Candidates for <span></span></h2>
+          <button class="back-btn" id="backToPositions">
+            <i class="fas fa-arrow-left"></i> Back to Positions
+          </button>
+        </div>
+        <div class="candidate-grid" id="candidateGrid">
+          <!-- Candidates will be loaded here -->
+        </div>
+      </div>
+
+      <div class="vote-confirmation hidden" id="voteConfirmation">
+        <div class="confirmation-card">
+          <div class="confirmation-header">
+            <i class="fas fa-shield-alt"></i>
+            <h3>Confirm Your Vote</h3>
+          </div>
+          <div class="confirmation-body">
+            <div class="selected-candidate" id="selectedCandidatePreview">
+              <!-- Candidate preview will be shown here -->
+            </div>
+            <p class="confirmation-text">
+              You are about to cast your vote on the blockchain. This action
+              cannot be undone.
+            </p>
+            <div class="confirmation-actions">
+              <button class="cancel-btn" id="cancelVote">
+                <i class="fas fa-times"></i> Cancel
+              </button>
+              <button class="confirm-btn" id="confirmVote">
+                <i class="fas fa-check"></i> Confirm Vote
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="floating-wallet-btn" id="connectWalletBtn">
+        <i class="fas fa-wallet"></i>
+        <span>Connect Wallet</span>
+      </div>
+
+      <div class="vote-success-modal hidden" id="voteSuccessModal">
+        <div class="modal-content">
+          <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h3>Vote Successful!</h3>
+          <p>Your vote has been securely recorded on the blockchain.</p>
+          <div class="transaction-info" id="transactionInfo">
+            <i class="fas fa-circle-notch fa-spin"></i>
+            <span>Recording transaction...</span>
+          </div>
+          <button class="close-modal-btn" id="closeModalBtn">
+            Return to Voting
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="static/vote.js"></script>
+  </body>
+</html>

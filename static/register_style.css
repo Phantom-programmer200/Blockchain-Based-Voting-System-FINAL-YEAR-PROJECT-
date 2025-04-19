@@ -1,0 +1,575 @@
+/* Color Scheme */
+:root {
+  --primary-blue: #1A5276;
+  --accent-orange: #E67E22;
+  --success-green: #27AE60;
+  --highlight-yellow: #F1C40F;
+  --light-blue: #3498DB;
+  --pure-white: #FFFFFF;
+  --light-gray: #F5F5F5;
+  --medium-gray: #E0E0E0;
+  --dark-gray: #34495E;
+  --text-gray: #7F8C8D;
+  --error-red: #E74C3C;
+}
+
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--light-gray);
+  color: var(--dark-gray);
+  line-height: 1.6;
+}
+
+.register-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header Styles */
+.register-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.logo-img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.logo h1 {
+  font-size: 2rem;
+  color: var(--primary-blue);
+}
+
+.logo span {
+  color: var(--accent-orange);
+}
+
+.register-header p {
+  color: var(--text-gray);
+  font-weight: 500;
+}
+
+/* Registration Card */
+.register-card {
+  background-color: var(--pure-white);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  margin: 0 auto;
+  max-width: 500px;
+  width: 100%;
+}
+
+.card-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.card-header h2 {
+  color: var(--primary-blue);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.card-header p {
+  color: var(--text-gray);
+  font-size: 0.9rem;
+}
+
+/* Wallet Section */
+.wallet-section {
+  margin-bottom: 1.5rem;
+}
+
+.wallet-btn {
+  background-color: var(--primary-blue);
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 8px;
+  font-weight: 600;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.wallet-btn:hover {
+  background-color: #144260;
+  transform: translateY(-2px);
+}
+
+.wallet-btn i {
+  font-size: 1.2rem;
+}
+
+.wallet-status {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.wallet-status.connected {
+  color: var(--success-green);
+}
+
+.wallet-status.error {
+  color: var(--error-red);
+}
+
+/* Form Styles */
+.registration-form {
+  margin-top: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--dark-gray);
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon i {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-gray);
+}
+
+.input-with-icon input {
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 2.5rem;
+  border: 1px solid var(--medium-gray);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.input-with-icon input:focus {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 3px rgba(26, 82, 118, 0.1);
+  outline: none;
+}
+
+/* File Upload */
+.file-upload-area {
+  margin-top: 0.5rem;
+}
+
+.file-upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  border: 2px dashed var(--medium-gray);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.file-upload-label:hover {
+  border-color: var(--primary-blue);
+  background-color: rgba(26, 82, 118, 0.02);
+}
+
+.upload-icon {
+  font-size: 2rem;
+  color: var(--primary-blue);
+  margin-bottom: 0.5rem;
+}
+
+.upload-text {
+  color: var(--primary-blue);
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+.file-info {
+  font-size: 0.8rem;
+  color: var(--text-gray);
+}
+
+.file-upload-label input[type="file"] {
+  display: none;
+}
+
+/* Checkbox */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+}
+
+.checkbox-group input {
+  margin-right: 0.5rem;
+  width: 18px;
+  height: 18px;
+}
+
+.checkbox-group label {
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+.checkbox-group a {
+  color: var(--primary-blue);
+  text-decoration: none;
+}
+
+.checkbox-group a:hover {
+  text-decoration: underline;
+}
+
+/* Submit Button */
+.submit-btn {
+  background-color: var(--accent-orange);
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.submit-btn:hover {
+  background-color: #d35400;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(230, 126, 34, 0.3);
+}
+
+.submit-btn:disabled {
+  background-color: var(--text-gray);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Status Messages */
+.registration-status {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.registration-status.success {
+  background-color: rgba(39, 174, 96, 0.1);
+  color: var(--success-green);
+  border: 1px solid rgba(39, 174, 96, 0.3);
+}
+
+.registration-status.error {
+  background-color: rgba(231, 76, 60, 0.1);
+  color: var(--error-red);
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+/* Login Prompt */
+.login-prompt {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: var(--text-gray);
+}
+
+.login-prompt a {
+  color: var(--primary-blue);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.login-prompt a:hover {
+  text-decoration: underline;
+}
+
+/* Blockchain Visual */
+.blockchain-visual {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.nodes {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.node {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(26, 82, 118, 0.1);
+  border-radius: 50%;
+  position: relative;
+}
+
+.node::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -0.8rem;
+  width: 0.8rem;
+  height: 2px;
+  background-color: var(--primary-blue);
+}
+
+.node:first-child::after {
+  display: none;
+}
+
+.blockchain-visual p {
+  color: var(--primary-blue);
+  font-weight: 500;
+}
+
+/* Footer */
+.register-footer {
+  text-align: center;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--medium-gray);
+  font-size: 0.8rem;
+  color: var(--text-gray);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .register-container {
+      padding: 1rem;
+  }
+  
+  .register-card {
+      padding: 1.5rem;
+  }
+  
+  .card-header h2 {
+      font-size: 1.3rem;
+  }
+  
+  .node {
+      width: 40px;
+      height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo h1 {
+      font-size: 1.5rem;
+  }
+  
+  .logo-img {
+      height: 30px;
+  }
+  
+  .input-with-icon input {
+      padding: 0.7rem 1rem 0.7rem 2.2rem;
+  }
+  
+  .file-upload-label {
+      padding: 1rem;
+  }
+}
+
+/* Add these new styles to your existing CSS */
+
+/* Document Preview Styles */
+.document-preview-container {
+  margin-top: 1rem;
+  border: 1px solid var(--medium-gray);
+  border-radius: 8px;
+  overflow: hidden;
+  display: none; /* Initially hidden */
+}
+
+.document-preview {
+  height: 200px;
+  background-color: var(--light-gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.preview-placeholder {
+  text-align: center;
+  color: var(--text-gray);
+}
+
+.preview-placeholder i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--primary-blue);
+}
+
+.document-preview img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.document-preview iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.document-actions {
+  display: flex;
+  border-top: 1px solid var(--medium-gray);
+  background-color: var(--light-gray);
+}
+
+.document-action-btn {
+  flex: 1;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: var(--dark-gray);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.document-action-btn:hover {
+  background-color: var(--medium-gray);
+  color: var(--primary-blue);
+}
+
+.document-action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.document-action-btn i {
+  font-size: 0.9rem;
+}
+
+/* Document Modal Styles */
+.document-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  overflow: auto;
+}
+
+.modal-content {
+  background-color: var(--pure-white);
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 800px;
+  position: relative;
+}
+
+.close-modal {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  color: var(--dark-gray);
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-modal:hover {
+  color: var(--primary-blue);
+}
+
+#modal-preview-content {
+  height: 70vh;
+  margin-top: 20px;
+}
+
+#modal-preview-content img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+#modal-preview-content iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Add to your existing media queries */
+@media (max-width: 768px) {
+  .document-preview {
+      height: 150px;
+  }
+  
+  .modal-content {
+      width: 90%;
+      margin: 10% auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .document-preview {
+      height: 120px;
+  }
+  
+  .document-action-btn {
+      font-size: 0.7rem;
+      padding: 0.3rem;
+  }
+}

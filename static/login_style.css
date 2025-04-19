@@ -1,0 +1,374 @@
+/* Color Scheme */
+:root {
+    --primary-blue: #1A5276;
+    --accent-orange: #E67E22;
+    --success-green: #27AE60;
+    --highlight-yellow: #F1C40F;
+    --light-blue: #3498DB;
+    --pure-white: #FFFFFF;
+    --light-gray: #F5F5F5;
+    --medium-gray: #E0E0E0;
+    --dark-gray: #34495E;
+    --text-gray: #7F8C8D;
+    --error-red: #E74C3C;
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--light-gray);
+    color: var(--dark-gray);
+    line-height: 1.6;
+}
+
+.login-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header Styles */
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+.logo-img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.logo h1 {
+    font-size: 2rem;
+    color: var(--primary-blue);
+}
+
+.logo span {
+    color: var(--accent-orange);
+}
+
+.login-header p {
+    color: var(--text-gray);
+    font-weight: 500;
+}
+
+/* Login Card */
+.login-card {
+    background-color: var(--pure-white);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    margin: 0 auto;
+    max-width: 500px;
+    width: 100%;
+}
+
+.card-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.card-header h2 {
+    color: var(--primary-blue);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.card-header p {
+    color: var(--text-gray);
+    font-size: 0.9rem;
+}
+
+/* Wallet Section */
+.wallet-section {
+    margin-bottom: 1.5rem;
+}
+
+.wallet-btn {
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.wallet-btn:hover {
+    background-color: #144260;
+    transform: translateY(-2px);
+}
+
+.wallet-btn i {
+    font-size: 1.2rem;
+}
+
+.wallet-status {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--text-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.wallet-status.connected {
+    color: var(--success-green);
+}
+
+.wallet-status.error {
+    color: var(--error-red);
+}
+
+/* Verification Section */
+.verification-section {
+    margin-bottom: 1.5rem;
+}
+
+.verify-btn {
+    background-color: var(--light-blue);
+    color: white;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.verify-btn:hover:not(:disabled) {
+    background-color: #2980B9;
+    transform: translateY(-2px);
+}
+
+.verify-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.verification-status {
+    margin-top: 0.5rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.verification-status i {
+    font-size: 1rem;
+}
+
+.verification-status.pending {
+    background-color: rgba(241, 196, 15, 0.1);
+    color: var(--highlight-yellow);
+    border: 1px solid rgba(241, 196, 15, 0.3);
+}
+
+.verification-status.success {
+    background-color: rgba(39, 174, 96, 0.1);
+    color: var(--success-green);
+    border: 1px solid rgba(39, 174, 96, 0.3);
+}
+
+.verification-status.error {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--error-red);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+/* Action Section */
+.action-section {
+    margin-bottom: 1.5rem;
+}
+
+.proceed-btn {
+    background-color: var(--accent-orange);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.proceed-btn:hover:not(:disabled) {
+    background-color: #d35400;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(230, 126, 34, 0.3);
+}
+
+.proceed-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Divider */
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 1.5rem 0;
+    color: var(--text-gray);
+    font-size: 0.8rem;
+}
+
+.divider::before, .divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.divider::before {
+    margin-right: 0.5rem;
+}
+
+.divider::after {
+    margin-left: 0.5rem;
+}
+
+/* Alternative Actions */
+.alternative-actions {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-gray);
+}
+
+.alternative-actions p {
+    margin-bottom: 0.5rem;
+}
+
+.alternative-actions a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.alternative-actions a:hover {
+    text-decoration: underline;
+}
+
+/* Blockchain Visual */
+.blockchain-visual {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.nodes {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.node {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(26, 82, 118, 0.1);
+    border-radius: 50%;
+    position: relative;
+}
+
+.node::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -0.8rem;
+    width: 0.8rem;
+    height: 2px;
+    background-color: var(--primary-blue);
+}
+
+.node:first-child::after {
+    display: none;
+}
+
+.blockchain-visual p {
+    color: var(--primary-blue);
+    font-weight: 500;
+}
+
+/* Footer */
+.login-footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--medium-gray);
+    font-size: 0.8rem;
+    color: var(--text-gray);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 1rem;
+    }
+    
+    .login-card {
+        padding: 1.5rem;
+    }
+    
+    .card-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .node {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo h1 {
+        font-size: 1.5rem;
+    }
+    
+    .logo-img {
+        height: 30px;
+    }
+    
+    .wallet-btn, .verify-btn, .proceed-btn {
+        padding: 0.7rem;
+        font-size: 0.9rem;
+    }
+}

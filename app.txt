@@ -1,0 +1,226 @@
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+from functools import wraps
+from web3 import Web3
+import json
+import os
+from dotenv import load_dotenv
+import time
+
+app = Flask(__name__)
+app.secret_key = "supersecretkey"  # Replace with a secure key in production
+
+# Connect to Ethereum blockchain (Ganache/Infura)
+load_dotenv()
+provider_url = os.getenv("WEB3_PROVIDER")
+w3 = Web3(Web3.HTTPProvider(provider_url))
+
+# private key stored
+PRIVATE_KEY = os.getenv("PRIVATE_KEY")
+
+# Load contract
+with open("VotingABI.json") as f:
+    contract_abi = json.load(f)
+
+contract_address = "0xa571e1e6158fD75005638E5Bc7C2939bA96c4a77"
+contract = w3.eth.contract(address=contract_address, abi=contract_abi)
+
+# ---------------------------
+# Constants
+# ---------------------------
+# Replace with your actual admin wallet
+ADMIN_WALLET = Web3.to_checksum_address(
+    "0xE5c13319e368C6c8b7D744848feF7fE3F13AC340")
+
+
+# ---------------------------
+# Login Required Decorator
+# ---------------------------
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        allowed_routes = ['login', 'register', 'wallet_login', 'static']
+        if not session.get("logged_in") and request.endpoint not in allowed_routes:
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+# ---------------------------
+# Admin Only Decorator
+# ---------------------------
+def admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        # Ensure the wallet is in checksum format before comparison
+        if not session.get("logged_in") or Web3.to_checksum_address(session.get("wallet", "").lower()) != ADMIN_WALLET:
+            return "🚫 Unauthorized: Admin access only", 403
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+# ---------------------------
+# Routes
+# ---------------------------
+@app.route("/")
+@login_required
+def home():
+    return render_template("index.html")
+
+
+@app.route("/register")
+def register():
+    return render_template("register.html")
+
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+
+@app.route("/wallet-login", methods=["POST"])
+def wallet_login():
+    data = request.get_json()
+    wallet_address = data.get("wallet", "").lower()
+
+    if wallet_address:
+        # Convert to checksum address before storing in session
+        wallet_address = Web3.to_checksum_address(wallet_address)
+        session["logged_in"] = True
+        session["wallet"] = wallet_address
+        session["is_admin"] = (wallet_address == ADMIN_WALLET)
+        return jsonify({"status": "success", "is_admin": session["is_admin"]})
+    else:
+        return jsonify({"status": "error", "message": "Wallet not found"})
+
+
+@app.route("/reset-election", methods=["POST"])
+@login_required
+def reset_election():
+    wallet = session.get("wallet")
+    if not wallet:
+        return jsonify({"status": "error", "message": "Wallet not connected"})
+
+    try:
+        wallet = Web3.to_checksum_address(wallet)
+        if wallet != ADMIN_WALLET:
+            return jsonify({"status": "error", "message": "Unauthorized: Not admin"})
+
+        # Ensure voting has ended
+        voting_end = contract.functions.votingEnd().call()
+        import time
+        current_time = int(time.time())
+        if current_time <= voting_end:
+            return jsonify({"status": "error", "message": "Voting period still ongoing"})
+
+        # Build transaction
+        nonce = w3.eth.get_transaction_count(wallet)
+        gas_price = w3.eth.gas_price
+
+        txn = contract.functions.resetElection().build_transaction({
+            'from': wallet,
+            'nonce': nonce,
+            'gasPrice': gas_price,
+            'gas': 300000  # adjust if needed
+        })
+
+        # Sign and send
+        signed_txn = w3.eth.account.sign_transaction(
+            txn, private_key=PRIVATE_KEY)
+        tx_hash = w3.eth.send_raw_transaction(signed_txn.rawTransaction)
+        receipt = w3.eth.wait_for_transaction_receipt(tx_hash)
+
+        return jsonify({"status": "success", "txHash": tx_hash.hex()})
+
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)})
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect(url_for("login"))
+
+
+@app.route('/admin')
+@admin_required
+def admin_dashboard():
+    return render_template('admin_dashboard.html')
+
+
+@app.route("/verify-voter")
+@login_required
+def verify_voter():
+    return render_template("verify_voter.html")
+
+
+@app.route("/home")
+@login_required
+def homepage():
+    return render_template("home.html")
+
+
+@app.route("/add_candidates")
+@login_required
+def add_candidates():
+    return render_template("add_candidates.html")
+
+
+@app.route("/set_voting_period")
+@login_required
+def set_voting_period():
+    return render_template("set_voting_period.html")
+
+
+@app.route("/candidates")
+@login_required
+def candidates():
+    return render_template("candidates.html")
+
+
+@app.route("/vote")
+@login_required
+def vote():
+    return render_template("vote.html")
+
+
+@app.route("/results")
+@login_required
+def results():
+    return render_template("results.html")
+
+
+@app.route("/candidate_details")
+@login_required
+def candidate_details():
+    return render_template("candidate-details.html")
+
+
+@app.route("/election-status")
+@login_required
+def election_status():
+    return render_template("election-status.html")
+
+
+@app.route("/voting-status")
+@login_required
+def voting_status():
+    return render_template("voting-status.html")
+
+
+@app.route("/election-history")
+@login_required
+def election_history():
+    return render_template("election-history.html")
+
+
+@app.route("/election-history-user")
+@login_required
+def election_history_user():
+    return render_template("election-history-user.html")
+
+
+# ---------------------------
+# Run App
+# ---------------------------
+if __name__ == "__main__":
+    app.run(debug=True)

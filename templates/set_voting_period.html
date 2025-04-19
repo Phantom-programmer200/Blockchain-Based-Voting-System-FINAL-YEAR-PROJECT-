@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Set Voting Period | Blockchain Voting</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="static/set_voting_period.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Set Voting Period</h1>
+        <p>Define when the election starts and ends</p>
+      </div>
+
+      <div class="wallet-status">
+        <span id="walletInfo"><i class="fas fa-wallet"></i> Not connected</span>
+        <button id="connectWalletBtn" onclick="connectWallet()">
+          <i class="fas fa-plug"></i> Connect Wallet
+        </button>
+      </div>
+
+      <form id="votingPeriodForm">
+        <div class="form-group">
+          <label for="startDate">Start Date</label>
+          <input type="date" id="startDate" required />
+        </div>
+
+        <div class="form-group time-row">
+          <div>
+            <label for="startTime">Start Time</label>
+            <input type="time" id="startTime" required />
+          </div>
+          <div>
+            <label for="endTime">End Time</label>
+            <input type="time" id="endTime" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="endDate">End Date</label>
+          <input type="date" id="endDate" required />
+        </div>
+
+        <button type="submit" id="submitBtn" disabled>
+          <i class="fas fa-calendar-check"></i> Set Voting Period
+        </button>
+
+        <div id="formStatus"></div>
+      </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.0/web3.min.js"></script>
+    <script src="static/set_voting_period.js"></script>
+  </body>
+</html>

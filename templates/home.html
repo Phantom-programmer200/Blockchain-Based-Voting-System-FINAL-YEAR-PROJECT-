@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NaijaVote | Blockchain Voting Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='home.css') }}"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.0.3/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- Animated Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <div class="logo">
+            <img
+              src="{{ url_for('static', filename='images/nigeria-coat-of-arms.png') }}"
+              alt="NaijaVote Logo"
+            />
+            <h1>Naija<span>Vote</span></h1>
+          </div>
+          <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+
+        <div class="wallet-info" id="walletInfo">
+          <i class="fas fa-wallet"></i>
+          <span class="wallet-address">Not connected</span>
+        </div>
+
+        <nav class="sidebar-nav">
+          <ul>
+            <li class="active">
+              <a href="#dashboard">
+                <i class="fas fa-chart-pie"></i>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="/voting-status">
+                <i class="fas fa-clock"></i>
+                <span>Voting Status</span>
+                <span class="status-bubble live">LIVE</span>
+              </a>
+            </li>
+            <li>
+              <a href="/candidates">
+                <i class="fas fa-users"></i>
+                <span>Candidates</span>
+              </a>
+            </li>
+            <li>
+              <a href="/vote">
+                <i class="fas fa-vote-yea"></i>
+                <span>Cast Vote</span>
+              </a>
+            </li>
+            <li>
+              <a href="/results">
+                <i class="fas fa-trophy"></i>
+                <span>Results</span>
+              </a>
+            </li>
+            <li>
+              <a href="/election-history-user">
+                <i class="fas fa-history"></i>
+                <span>Election History</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="user-profile">
+            <div class="avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="user-info">
+              <span class="username">Guest User</span>
+              <span class="user-role">Voter</span>
+            </div>
+          </div>
+          <button class="logout-btn" id="logoutBtn">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="top-bar">
+          <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search elections, candidates..." />
+          </div>
+          <button class="connect-wallet-btn" id="connectWalletBtn">
+            <i class="fas fa-plug"></i>
+            <span>Connect Wallet</span>
+          </button>
+        </div>
+
+        <section class="dashboard-section" id="dashboard">
+          <div class="welcome-banner">
+            <h1>Welcome to Nigeria's Blockchain Voting System</h1>
+            <p>
+              Secure, transparent elections powered by blockchain technology
+            </p>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-vote-yea"></i>
+              </div>
+              <div class="stat-info">
+                <h3>Total Votes Cast</h3>
+                <span class="stat-value" id="totalVotes">--</span>
+                <span class="stat-change positive"
+                  ><i class="fas fa-arrow-up"></i> 12% today</span
+                >
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-users"></i>
+              </div>
+              <div class="stat-info">
+                <h3>Registered Voters</h3>
+                <span class="stat-value" id="registeredVoters">--</span>
+                <span class="stat-change positive"
+                  ><i class="fas fa-arrow-up"></i> 5% this week</span
+                >
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <div class="stat-info">
+                <h3>Candidates</h3>
+                <span class="stat-value" id="totalCandidates">--</span>
+                <span class="stat-change">No change</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-stopwatch"></i>
+              </div>
+              <div class="stat-info">
+                <h3>Time Remaining</h3>
+                <span class="stat-value" id="countdownTimer">--</span>
+                <span class="stat-change negative"
+                  ><i class="fas fa-arrow-down"></i> Ending soon</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="content-row">
+            <div class="chart-card">
+              <div class="card-header">
+                <h3><i class="fas fa-chart-bar"></i> Voting Activity</h3>
+                <div class="time-filter">
+                  <button class="active">24H</button>
+                  <button>7D</button>
+                  <button>30D</button>
+                </div>
+              </div>
+              <canvas id="votingActivityChart"></canvas>
+            </div>
+
+            <div class="announcement-card">
+              <div class="card-header">
+                <h3><i class="fas fa-bullhorn"></i> Announcements</h3>
+              </div>
+              <div class="announcements">
+                <div class="announcement">
+                  <div class="announcement-badge urgent">
+                    <i class="fas fa-exclamation"></i>
+                  </div>
+                  <div class="announcement-content">
+                    <h4>Voting ends in 24 hours</h4>
+                    <p>Make sure to cast your vote before the deadline</p>
+                    <span class="announcement-time">2 hours ago</span>
+                  </div>
+                </div>
+                <div class="announcement">
+                  <div class="announcement-badge info">
+                    <i class="fas fa-info-circle"></i>
+                  </div>
+                  <div class="announcement-content">
+                    <h4>New candidate added</h4>
+                    <p>
+                      John Doe has been approved as a candidate for Governor
+                    </p>
+                    <span class="announcement-time">1 day ago</span>
+                  </div>
+                </div>
+                <div class="announcement">
+                  <div class="announcement-badge update">
+                    <i class="fas fa-sync-alt"></i>
+                  </div>
+                  <div class="announcement-content">
+                    <h4>System maintenance</h4>
+                    <p>Scheduled maintenance tomorrow from 2-4 AM</p>
+                    <span class="announcement-time">3 days ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="quick-actions">
+            <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+            <div class="action-buttons">
+              <button class="action-btn">
+                <i class="fas fa-vote-yea"></i>
+                <span>Cast Your Vote</span>
+              </button>
+              <button class="action-btn">
+                <i class="fas fa-user-check"></i>
+                <span>Verify Identity</span>
+              </button>
+              <button class="action-btn">
+                <i class="fas fa-poll"></i>
+                <span>View Results</span>
+              </button>
+              <button class="action-btn">
+                <i class="fas fa-question-circle"></i>
+                <span>Get Help</span>
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='home.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Election Status | Web3 Voting</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="static/election-status.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="glass-card">
+        <div class="header">
+          <h1><span class="gradient-text">Election Status</span></h1>
+          <p>Real-time monitoring of the voting process</p>
+        </div>
+
+        <div class="wallet-status">
+          <div id="walletInfo">
+            <i class="fas fa-wallet"></i>
+            <span id="walletAddress">Not connected</span>
+          </div>
+          <button id="connectWalletBtn">
+            <i class="fas fa-plug"></i> Connect Wallet
+          </button>
+        </div>
+
+        <div class="status-container">
+          <div class="status-card" id="statusCard">
+            <div class="status-icon">
+              <i class="fas fa-spinner fa-pulse"></i>
+            </div>
+            <div class="status-content">
+              <h3 id="electionStatus">Loading election status...</h3>
+              <p id="votingTime" class="time-display"></p>
+            </div>
+          </div>
+
+          <div class="countdown-container" id="countdownContainer">
+            <div class="countdown-card">
+              <div class="countdown-header">
+                <i class="fas fa-clock"></i>
+                <h4>Time Remaining</h4>
+              </div>
+              <div class="countdown-display" id="countdown">
+                <div class="countdown-segment">
+                  <span id="days">00</span>
+                  <small>Days</small>
+                </div>
+                <div class="countdown-segment">
+                  <span id="hours">00</span>
+                  <small>Hours</small>
+                </div>
+                <div class="countdown-segment">
+                  <span id="minutes">00</span>
+                  <small>Minutes</small>
+                </div>
+                <div class="countdown-segment">
+                  <span id="seconds">00</span>
+                  <small>Seconds</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="results-container" id="resultsContainer">
+          <h3><i class="fas fa-trophy"></i> Election Results</h3>
+          <ul class="results-list" id="resultsList">
+            <li class="loading-result">
+              <i class="fas fa-spinner fa-pulse"></i> Loading results...
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="transaction-modal" id="transactionModal">
+        <div class="modal-content">
+          <div class="loader">
+            <div class="blockchain-animation">
+              <div class="block"></div>
+              <div class="block"></div>
+              <div class="block"></div>
+            </div>
+            <p id="transactionStatus">Connecting to blockchain...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.0/web3.min.js"></script>
+    <script src="static/election-status.js"></script>
+  </body>
+</html>

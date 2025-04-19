@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register - NaijaVote Blockchain</title>
+    <link rel="stylesheet" href="static/register_style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="register-container">
+      <div class="register-header">
+        <div class="logo">
+          <img
+            src="static/images/nigeria-coat-of-arms.png"
+            alt="NaijaVote Logo"
+            class="logo-img"
+          />
+          <h1>Naija<span>Vote</span></h1>
+        </div>
+        <p>Secure Blockchain Voting for Nigeria</p>
+      </div>
+
+      <main class="register-card">
+        <div class="card-header">
+          <h2><i class="fas fa-user-shield"></i> Voter Registration</h2>
+          <p>Join Nigeria's trusted blockchain voting network</p>
+        </div>
+
+        <div class="wallet-section">
+          <button
+            id="connect-wallet-btn"
+            class="wallet-btn"
+            onclick="connectWallet()"
+          >
+            <i class="fab fa-ethereum"></i> Connect Wallet
+          </button>
+          <div id="wallet-status" class="wallet-status">
+            <i class="fas fa-circle-notch fa-spin"></i> Wallet not connected
+          </div>
+        </div>
+
+        <form id="registration-form" class="registration-form">
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <div class="input-with-icon">
+              <i class="fas fa-user"></i>
+              <input
+                type="text"
+                id="name"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="document-file">Identity Verification</label>
+            <div class="file-upload-area">
+              <label for="document-file" class="file-upload-label">
+                <div class="upload-icon">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <span class="upload-text">Upload government-issued ID</span>
+                <span class="file-info">PDF, JPG or PNG (Max 5MB)</span>
+                <input
+                  type="file"
+                  id="document-file"
+                  accept="application/pdf, image/*"
+                  required
+                />
+              </label>
+            </div>
+
+            <!-- Document Preview Container -->
+            <div
+              id="document-preview-container"
+              class="document-preview-container"
+            >
+              <div id="document-preview" class="document-preview">
+                <div class="preview-placeholder">
+                  <i class="fas fa-file-alt"></i>
+                  <p>Document preview will appear here</p>
+                </div>
+              </div>
+              <div class="document-actions">
+                <button
+                  type="button"
+                  id="clear-document"
+                  class="document-action-btn"
+                >
+                  <i class="fas fa-trash"></i> Remove
+                </button>
+                <button
+                  type="button"
+                  id="view-document"
+                  class="document-action-btn"
+                  disabled
+                >
+                  <i class="fas fa-expand"></i> View Full
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <input type="hidden" id="document-url" />
+
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="terms" required />
+            <label for="terms"
+              >I certify that I'm a Nigerian citizen and agree to the
+              <a href="#">Terms</a></label
+            >
+          </div>
+
+          <button type="submit" class="submit-btn">
+            <span id="submit-text">Register as Voter</span>
+            <i class="fas fa-lock"></i>
+          </button>
+        </form>
+
+        <div id="registration-status" class="registration-status"></div>
+
+        <div class="login-prompt">
+          <p>
+            Already registered? <a href="/login">Access your voter dashboard</a>
+          </p>
+        </div>
+      </main>
+
+      <div class="blockchain-visual">
+        <div class="nodes">
+          <div class="node"></div>
+          <div class="node"></div>
+          <div class="node"></div>
+        </div>
+        <p>Your registration will be permanently secured on the blockchain</p>
+      </div>
+
+      <footer class="register-footer">
+        <p>
+          © 2025 NaijaVote | INEC Certified | Powered by Blockchain Technology
+        </p>
+      </footer>
+    </div>
+
+    <!-- Document Preview Modal -->
+    <div id="document-modal" class="document-modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <div id="modal-preview-content"></div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.0.3/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ipfs-http-client/dist/index.min.js"></script>
+    <script src="static/register.js"></script>
+  </body>
+</html>

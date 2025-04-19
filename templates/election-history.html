@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Election History | Web3 Voting</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="static/election-history.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="glass-card">
+        <div class="header">
+          <h1><span class="gradient-text">Election History</span></h1>
+          <p>View past election results stored on the blockchain</p>
+        </div>
+
+        <div class="wallet-status">
+          <div id="walletInfo">
+            <i class="fas fa-wallet"></i>
+            <span id="walletAddress">Not connected</span>
+          </div>
+          <button id="connectButton">
+            <i class="fas fa-plug"></i> Connect Wallet
+          </button>
+          <button id="storeResultsButton" class="hidden">
+            <i class="fas fa-save"></i> Store Results
+          </button>
+        </div>
+
+        <div class="history-container" id="electionHistory">
+          <div class="loading-history">
+            <div class="blockchain-loader">
+              <div class="block"></div>
+              <div class="block"></div>
+              <div class="block"></div>
+            </div>
+            <p>Loading election history from blockchain...</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="transaction-modal" id="transactionModal">
+        <div class="modal-content">
+          <div class="loader">
+            <div class="blockchain-animation">
+              <div class="block"></div>
+              <div class="block"></div>
+              <div class="block"></div>
+            </div>
+            <p id="transactionStatus">Processing transaction...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.0/web3.min.js"></script>
+    <script src="static/election-history.js"></script>
+  </body>
+</html>

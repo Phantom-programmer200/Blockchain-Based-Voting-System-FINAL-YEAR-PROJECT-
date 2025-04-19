@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voter Verification | Web3 Voting</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="static/verify_voter.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="glass-card">
+        <div class="header">
+          <h1><span class="gradient-text">Voter Verification</span></h1>
+          <p>Verify eligible voters for the blockchain election</p>
+        </div>
+
+        <div class="wallet-status">
+          <div id="walletInfo">
+            <i class="fas fa-wallet"></i>
+            <span id="statusMessage">Wallet not connected</span>
+          </div>
+          <button id="connectWalletBtn">
+            <i class="fas fa-plug"></i> Connect Wallet
+          </button>
+        </div>
+
+        <div class="voter-table-container">
+          <table class="voter-table">
+            <thead>
+              <tr>
+                <th>Address</th>
+                <th>Name</th>
+                <th>Document</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="voterTableBody">
+              <tr class="loading-row">
+                <td colspan="5">
+                  <div class="loading-spinner">
+                    <div class="block"></div>
+                    <div class="block"></div>
+                    <div class="block"></div>
+                  </div>
+                  Loading voter data...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="transaction-modal" id="transactionModal">
+          <div class="modal-content">
+            <div class="loader">
+              <div class="blockchain-animation">
+                <div class="block"></div>
+                <div class="block"></div>
+                <div class="block"></div>
+              </div>
+              <p id="transactionStatus">Processing transaction...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.0/web3.min.js"></script>
+    <script src="static/verify_voter.js"></script>
+  </body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blockchain Voting Admin</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='admin_dashboard_style.css') }}"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.0/web3.min.js"></script>
+  </head>
+  <body class="dark-mode">
+    <div class="dashboard">
+      <!-- Sidebar Navigation (Collapsible) -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2>
+            <i class="fas fa-shield-alt"></i>
+            <span class="logo-text">VoteChain</span>
+          </h2>
+          <button class="toggle-sidebar"><i class="fas fa-bars"></i></button>
+        </div>
+        <ul class="nav-links">
+          <li class="active">
+            <a href="/admin"><i class="fas fa-home"></i> Dashboard</a>
+          </li>
+          <li>
+            <a href="/set_voting_period"
+              ><i class="fas fa-clock"></i> Voting Period</a
+            >
+          </li>
+          <li>
+            <a href="/add_candidates"
+              ><i class="fas fa-user-plus"></i> Add Candidates</a
+            >
+          </li>
+          <li>
+            <a href="/verify-voter"
+              ><i class="fas fa-check-circle"></i> Verify Voters</a
+            >
+          </li>
+          <li>
+            <a href="/candidate_details"
+              ><i class="fas fa-list"></i> Candidates</a
+            >
+          </li>
+          <li>
+            <a href="/election-status"
+              ><i class="fas fa-chart-line"></i> Election Status</a
+            >
+          </li>
+          <li>
+            <a href="/election-history"
+              ><i class="fas fa-history"></i> History</a
+            >
+          </li>
+        </ul>
+        <div class="wallet-status">
+          <div id="wallet-info">
+            <i class="fas fa-wallet"></i>
+            <span id="wallet-address">Not Connected</span>
+          </div>
+          <button id="connect-wallet-btn" onclick="connectWallet()">
+            <i class="fas fa-plug"></i> Connect
+          </button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="content">
+        <header>
+          <div class="header-left">
+            <h1>Admin Dashboard</h1>
+            <p id="network-status">
+              <i class="fas fa-circle"></i> Ethereum Mainnet
+            </p>
+          </div>
+          <div class="header-right">
+            <button id="dark-mode-toggle" onclick="toggleDarkMode()">
+              <i class="fas fa-moon"></i>
+            </button>
+            <button id="reset-status" onclick="resetElection()">
+              <i class="fas fa-trash"></i> Reset Election
+            </button>
+          </div>
+        </header>
+
+        <!-- Stats Overview -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(0, 209, 255, 0.1)">
+              <i class="fas fa-user-tie" style="color: #00d1ff"></i>
+            </div>
+            <h3>Total Candidates</h3>
+            <p id="candidateCount">0</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(138, 43, 226, 0.1)">
+              <i class="fas fa-users" style="color: #8a2be2"></i>
+            </div>
+            <h3>Registered Voters</h3>
+            <p id="voterCount">0</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(0, 255, 163, 0.1)">
+              <i class="fas fa-vote-yea" style="color: #00ffa3"></i>
+            </div>
+            <h3>Voting Status</h3>
+            <p id="votingStatus">Not Set</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background: rgba(255, 77, 77, 0.1)">
+              <i class="fas fa-fire" style="color: #ff4d4d"></i>
+            </div>
+            <h3>Gas Price</h3>
+            <p id="gasPrice">-</p>
+          </div>
+        </div>
+
+        <!-- Charts & Logs -->
+        <div class="data-section">
+          <div class="chart-container">
+            <h2><i class="fas fa-chart-pie"></i> Voting Distribution</h2>
+            <canvas id="votesChart"></canvas>
+          </div>
+          <div class="activity-logs">
+            <h2><i class="fas fa-list"></i> Recent Transactions</h2>
+            <div class="logs-container" id="activityLog">
+              <div class="log-entry">
+                <i class="fas fa-circle-notch fa-spin"></i> Loading...
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='admin_dashboard.js') }}"></script>
+  </body>
+</html>

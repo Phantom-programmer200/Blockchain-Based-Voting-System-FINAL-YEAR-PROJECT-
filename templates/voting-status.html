@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voting Status | NaijaVote Blockchain</title>
+    <link rel="stylesheet" href="static/voting-status.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.0.3/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- Sidebar removed -->
+
+      <!-- Main Content -->
+      <main class="main-content" style="margin-left: 0">
+        <!-- Override sidebar spacing -->
+        <div class="top-bar">
+          <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search candidates, positions..." />
+          </div>
+          <button class="connect-wallet-btn" id="connectWalletBtn">
+            <i class="fas fa-plug"></i>
+            <span>Connect Wallet</span>
+          </button>
+        </div>
+
+        <section class="voting-status-section">
+          <div class="status-header">
+            <h1><i class="fas fa-vote-yea"></i> Voting Status</h1>
+            <div class="status-indicator" id="votingStatus">
+              <div class="spinner"></div>
+              <span>Checking voting status...</span>
+            </div>
+          </div>
+
+          <div class="time-remaining-card">
+            <div class="card-icon">
+              <i class="fas fa-stopwatch"></i>
+            </div>
+            <div class="card-content">
+              <h3>Time Remaining</h3>
+              <div class="countdown" id="votingTime">
+                <div class="spinner"></div>
+                <span>Loading...</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-row">
+            <div class="chart-card">
+              <div class="card-header">
+                <h3><i class="fas fa-chart-line"></i> Voting Activity</h3>
+                <div class="time-filter">
+                  <button class="active">24H</button>
+                  <button>7D</button>
+                  <button>30D</button>
+                </div>
+              </div>
+              <canvas id="votingActivityChart"></canvas>
+            </div>
+
+            <div class="positions-card">
+              <div class="card-header">
+                <h3><i class="fas fa-bullhorn"></i> Election Positions</h3>
+                <div class="positions-count" id="positionsCount">
+                  0 positions
+                </div>
+              </div>
+              <div class="positions-list" id="positionsList">
+                <div class="placeholder">
+                  <i class="fas fa-spinner fa-spin"></i>
+                  <p>Loading election positions...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="candidates-section">
+            <h2><i class="fas fa-users"></i> Candidates by Position</h2>
+            <div class="candidates-container" id="candidates">
+              <div class="placeholder">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading candidates...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="static/voting-status.js"></script>
+  </body>
+</html>

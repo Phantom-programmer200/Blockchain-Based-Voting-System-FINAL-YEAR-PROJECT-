@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Candidates | NaijaVote Blockchain</title>
+    <link rel="stylesheet" href="static/candidates.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/4.0.3/web3.min.js"></script>
+  </head>
+  <body>
+    <div class="candidates-container">
+      <header class="candidates-header">
+        <div class="header-content">
+          <h1><i class="fas fa-users"></i> Election Candidates</h1>
+          <p>Meet the candidates for the upcoming elections</p>
+        </div>
+        <div id="statusMessage" class="status-message">
+          <i class="fas fa-circle-notch fa-spin"></i> Loading candidates...
+        </div>
+      </header>
+
+      <div class="filter-controls">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search candidates..."
+          />
+        </div>
+        <div class="position-filter">
+          <select id="positionSelect">
+            <option value="">All Positions</option>
+            <option value="President">President</option>
+            <option value="Governor">Governor</option>
+            <option value="Senator">Senator</option>
+            <option value="Representative">Representative</option>
+          </select>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+      </div>
+
+      <div class="candidates-grid" id="candidateContainer">
+        <!-- Candidate cards will be inserted here by JavaScript -->
+
+        <!-- Loading skeleton -->
+        <div class="candidate-card skeleton">
+          <div class="image-placeholder"></div>
+          <div class="content-placeholder">
+            <div class="line"></div>
+            <div class="line short"></div>
+            <div class="line"></div>
+            <div class="line short"></div>
+          </div>
+        </div>
+        <div class="candidate-card skeleton">
+          <div class="image-placeholder"></div>
+          <div class="content-placeholder">
+            <div class="line"></div>
+            <div class="line short"></div>
+            <div class="line"></div>
+            <div class="line short"></div>
+          </div>
+        </div>
+        <div class="candidate-card skeleton">
+          <div class="image-placeholder"></div>
+          <div class="content-placeholder">
+            <div class="line"></div>
+            <div class="line short"></div>
+            <div class="line"></div>
+            <div class="line short"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wallet-floating-btn" id="walletBtn">
+        <i class="fas fa-wallet"></i>
+        <span class="wallet-status">Connect Wallet</span>
+      </div>
+
+      <div class="floating-action-btn" id="scrollToTopBtn">
+        <i class="fas fa-arrow-up"></i>
+      </div>
+    </div>
+
+    <script src="static/candidates.js"></script>
+  </body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nigeria Blockchain Voting System</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="logo">
+          <img
+            src="static/images/nigeria-coat-of-arms.png"
+            alt="Nigeria Coat of Arms"
+            class="coat-of-arms"
+          />
+          <h1>Vote<span>Naija</span></h1>
+        </div>
+        <div class="hamburger" onclick="toggleNav()">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+        <ul class="nav-links">
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li class="language-selector">
+            <select id="language">
+              <option value="en">English</option>
+              <option value="ha">Hausa</option>
+              <option value="yo">Yoruba</option>
+              <option value="ig">Igbo</option>
+            </select>
+          </li>
+          <li>
+            <a href="/register" class="btn btn-primary">Login/Register</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="blockchain-animation"></div>
+      <div class="container">
+        <div class="hero-content">
+          <h1>Secure, Transparent, and Tamper-Proof Voting for Nigeria</h1>
+          <p>Powered by Blockchain Technology to Ensure Every Vote Counts</p>
+          <div class="cta-buttons">
+            <a href="/register" class="btn btn-primary">Register to Vote</a>
+            <a href="#how-it-works" class="btn btn-secondary">How It Works</a>
+          </div>
+        </div>
+        <div class="hero-image">
+          <img
+            src="/static/images/voting-illustration.png"
+            alt="Voting Illustration"
+          />
+        </div>
+      </div>
+      <div class="flag-colors">
+        <div class="color green"></div>
+        <div class="color white"></div>
+        <div class="color green"></div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+      <div class="container">
+        <div class="section-header">
+          <h2>Why Blockchain Voting?</h2>
+          <p>
+            Our platform ensures the most secure and transparent voting
+            experience
+          </p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="icon">
+              <i class="fas fa-lock"></i>
+            </div>
+            <h3>Blockchain Security</h3>
+            <p>
+              Immutable ledger prevents vote tampering and ensures data
+              integrity
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">
+              <i class="fas fa-fingerprint"></i>
+            </div>
+            <h3>Biometric Verification</h3>
+            <p>
+              Fingerprint/Face ID ensures only eligible voters can participate
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>Real-Time Results</h3>
+            <p>Instant, transparent vote counting with no delays</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h3>Mobile & Web Access</h3>
+            <p>Vote securely from any device with internet access</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">
+              <i class="fas fa-user-secret"></i>
+            </div>
+            <h3>Anonymous Voting</h3>
+            <p>Your identity remains private while your vote is recorded</p>
+          </div>
+          <div class="feature-card">
+            <div class="icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <h3>Audit Trail</h3>
+            <p>
+              Every vote is verifiable on the blockchain for complete
+              transparency
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+      <div class="container">
+        <div class="section-header">
+          <h2>How It Works</h2>
+          <p>Follow these simple steps to vote securely and transparently</p>
+        </div>
+        <div class="process-steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <h3>Voter Registration</h3>
+              <p>
+                Verify your identity with BVN/NIN and register on our platform
+              </p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <h3>Authentication</h3>
+              <p>Log in via biometrics or secure OTP when it's time to vote</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <h3>Cast Your Vote</h3>
+              <p>Select candidates securely with our intuitive interface</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <h3>Blockchain Confirmation</h3>
+              <p>Your vote is recorded on an immutable blockchain ledger</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+              <h3>View Results</h3>
+              <p>
+                See real-time, tamper-proof election results when voting ends
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo">
+      <div class="container">
+        <div class="demo-content">
+          <h2>Experience Secure Voting</h2>
+          <p>Try our interactive demo to see how blockchain voting works</p>
+          <a href="#" class="btn btn-primary" id="demo-btn">Try Demo</a>
+        </div>
+        <div class="demo-video">
+          <div class="video-placeholder">
+            <i class="fas fa-play"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <h2>Frequently Asked Questions</h2>
+          <p>Find answers to common questions about blockchain voting</p>
+        </div>
+        <div class="faq-accordion">
+          <div class="accordion-item">
+            <button class="accordion-btn">
+              Is my vote really anonymous?<i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="accordion-content">
+              <p>
+                Yes! While your identity is verified during registration, your
+                actual votes are completely anonymous on the blockchain. We use
+                advanced cryptographic techniques to ensure this separation.
+              </p>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-btn">
+              How does blockchain prevent fraud?<i
+                class="fas fa-chevron-down"
+              ></i>
+            </button>
+            <div class="accordion-content">
+              <p>
+                Blockchain creates an immutable, transparent record of all
+                votes. Once recorded, votes cannot be altered or deleted. The
+                decentralized nature means no single entity can manipulate the
+                results.
+              </p>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-btn">
+              What if I don't have a smartphone?<i
+                class="fas fa-chevron-down"
+              ></i>
+            </button>
+            <div class="accordion-content">
+              <p>
+                We provide multiple access methods. You can vote from any
+                internet-connected device, or visit designated voting centers
+                with assisted digital kiosks.
+              </p>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-btn">
+              How are results verified?<i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="accordion-content">
+              <p>
+                Anyone can verify results by checking the public blockchain
+                ledger. Each vote is recorded as a transaction that can be
+                audited without revealing voter identities.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Partners Section -->
+    <section class="partners">
+      <div class="container">
+        <h3>Trusted By</h3>
+        <div class="partner-logos">
+          <img src="static/images/inec-logo.png" alt="INEC" />
+          <img src="static/images/ndic-logo.png" alt="NDIC" />
+          <img src="static/images/ncc-logo.png" alt="NCC" />
+          <img
+            src="static/images/nigerian-govt-logo.png"
+            alt="Federal Government of Nigeria"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-col">
+            <div class="logo">
+              <img
+                src="static/images/nigeria-coat-of-arms.png"
+                alt="Nigeria Coat of Arms"
+                class="coat-of-arms"
+              />
+              <h2>Vote<span>Naija</span></h2>
+            </div>
+            <p>
+              Bringing transparency and trust to Nigerian elections through
+              blockchain technology.
+            </p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-facebook"></i></a>
+              <a href="#"><i class="fab fa-linkedin"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+          <div class="footer-col">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#features">Features</a></li>
+              <li><a href="#how-it-works">How It Works</a></li>
+              <li><a href="#faq">FAQ</a></li>
+              <li><a href="/register">Register</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h3>Contact Us</h3>
+            <ul>
+              <li><i class="fas fa-map-marker-alt"></i> Abuja, Nigeria</li>
+              <li><i class="fas fa-phone"></i> +234 800 000 0000</li>
+              <li><i class="fas fa-envelope"></i> info@votenaija.ng</li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2025 VoteNaija. All Rights Reserved.</p>
+          <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/static/script.js"></script>
+  </body>
+</html>
