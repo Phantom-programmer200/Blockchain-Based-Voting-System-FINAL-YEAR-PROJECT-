@@ -1,275 +1,211 @@
-// Contract variables
-let contract;
+const contractAddress = "0xF5B8C24409bE242dB535Bac3cE597B11D17F7e0D";
 let web3;
-const contractAddress = "0xF5B8C24409bE242dB535Bac3cE597B11D17F7e0D"; // Replace this
+let contract;
+let abi;
 
-// UI Elements
+// DOM Elements
+const connectButton = document.getElementById("connectWallet");
+const walletStatus = document.querySelector(".wallet-status .status-dot");
+const walletStatusText = document.querySelector(".wallet-status .status-text");
+const votingStatus = document.querySelector(".voting-status .status-indicator");
+const votingStatusText = document.querySelector(".voting-status .status-text");
 const resultsContainer = document.getElementById("resultsContainer");
-const metamaskStatus = document.getElementById("metamaskStatus");
-const refreshBtn = document.getElementById("refreshBtn");
+const totalVotesEl = document.getElementById("totalVotes");
+const totalCandidatesEl = document.getElementById("totalCandidates");
+const totalPositionsEl = document.getElementById("totalPositions");
+const confettiContainer = document.getElementById("confettiContainer");
 
-// Unique Interactive Features
-function createConfetti(x, y) {
-  const colors = [
-    "#1A5276",
-    "#E67E22",
-    "#27AE60",
-    "#F1C40F",
-    "#3498DB",
-    "#E74C3C",
-    "#9B59B6",
-    "#2ECC71",
-  ];
-  for (let i = 0; i < 50; i++) {
-    const confetti = document.createElement("div");
-    confetti.className = "confetti";
-    confetti.style.left = `${x}px`;
-    confetti.style.top = `${y}px`;
-    confetti.style.backgroundColor =
-      colors[Math.floor(Math.random() * colors.length)];
-    confetti.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
-
-    document.body.appendChild(confetti);
-
-    const angle = Math.random() * Math.PI * 2;
-    const velocity = 5 + Math.random() * 5;
-    const xVel = Math.cos(angle) * velocity;
-    const yVel = Math.sin(angle) * velocity;
-
-    let posX = x;
-    let posY = y;
-    let opacity = 1;
-
-    const animate = () => {
-      posX += xVel;
-      posY += yVel + 0.5; // Add gravity
-      opacity -= 0.02;
-
-      confetti.style.left = `${posX}px`;
-      confetti.style.top = `${posY}px`;
-      confetti.style.opacity = opacity;
-
-      if (opacity > 0) {
-        requestAnimationFrame(animate);
-      } else {
-        confetti.remove();
-      }
-    };
-
-    requestAnimationFrame(animate);
+// Load ABI
+async function loadABI() {
+  try {
+    const response = await fetch("/static/contract_abi.json");
+    abi = await response.json();
+    console.log("ABI loaded successfully");
+  } catch (error) {
+    console.error("Error loading ABI:", error);
+    showError("Failed to load contract ABI");
   }
 }
 
-function animateWinnerCard(card) {
-  card.style.animation = "none";
-  void card.offsetWidth; // Trigger reflow
-  card.style.animation = "pulse 2s infinite";
-
-  // Add confetti to winner cards
-  card.addEventListener("click", (e) => {
-    createConfetti(e.clientX, e.clientY);
-  });
-}
-
-async function checkMetaMaskConnection() {
+// Connect Wallet
+async function connectWallet() {
   if (window.ethereum) {
     try {
-      const accounts = await window.ethereum.request({
-        method: "eth_accounts",
-      });
-      if (accounts.length > 0) {
-        metamaskStatus.classList.remove("disconnected");
-        metamaskStatus.classList.add("connected");
-        metamaskStatus.querySelector(
-          "span"
-        ).textContent = `Connected: ${accounts[0].slice(
-          0,
-          6
-        )}...${accounts[0].slice(-4)}`;
-      } else {
-        metamaskStatus.classList.remove("connected");
-        metamaskStatus.classList.add("disconnected");
-        metamaskStatus.querySelector("span").textContent =
-          "MetaMask Not Connected";
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
-}
+      connectButton.disabled = true;
+      connectButton.innerHTML =
+        '<span class="button-icon">⏳</span> Connecting...';
 
-async function loadContract() {
-  if (window.ethereum) {
-    web3 = new Web3(window.ethereum);
-    try {
-      const response = await fetch("/static/contract_abi.json");
-      const contractABI = await response.json();
-      contract = new web3.eth.Contract(contractABI, contractAddress);
-      await checkMetaMaskConnection();
-      await loadResults();
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      web3 = new Web3(window.ethereum);
+      contract = new web3.eth.Contract(abi, contractAddress);
 
-      // Listen for account changes
+      walletStatus.classList.add("connected");
+      walletStatusText.textContent = "Connected";
+      connectButton.innerHTML = '<span class="button-icon">✅</span> Connected';
+
+      // Load election data
+      await loadElectionData();
+
+      // Set up event listeners
       window.ethereum.on("accountsChanged", (accounts) => {
-        checkMetaMaskConnection();
-        loadResults();
+        if (accounts.length === 0) {
+          // Wallet disconnected
+          walletStatus.classList.remove("connected");
+          walletStatusText.textContent = "Not Connected";
+          connectButton.disabled = false;
+          connectButton.innerHTML =
+            '<span class="button-icon">🔗</span> Connect Wallet';
+          resultsContainer.innerHTML =
+            '<div class="loading-message"><div class="spinner"></div><p>Please connect your wallet to view results</p></div>';
+        } else {
+          // Account changed
+          loadElectionData();
+        }
       });
 
-      // Listen for chain changes
-      window.ethereum.on("chainChanged", (chainId) => {
-        window.location.reload();
-      });
-    } catch (err) {
-      console.error("Failed to load contract ABI:", err);
+      createConfetti();
+    } catch (error) {
+      console.error("Error connecting wallet:", error);
+      connectButton.disabled = false;
+      connectButton.innerHTML =
+        '<span class="button-icon">🔗</span> Connect Wallet';
+      showError("Failed to connect wallet");
     }
   } else {
-    metamaskStatus.classList.add("disconnected");
-    metamaskStatus.querySelector("span").textContent = "MetaMask Not Installed";
+    showError("MetaMask not detected. Please install MetaMask.");
   }
 }
 
-async function loadResults() {
+// Updated loadElectionData function
+async function loadElectionData() {
   try {
-    // Show loading state
     resultsContainer.innerHTML =
-      '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--dark-gray)">Loading results...</div>';
+      '<div class="loading-message"><div class="spinner"></div><p>Loading election data...</p></div>';
 
-    const count = await contract.methods.candidatesCount().call();
-    const uniquePositions = new Set();
+    // Check voting status
+    const isVotingOpen = await contract.methods.isVotingOpen().call();
+    updateVotingStatus(isVotingOpen);
 
-    // First collect all positions from candidates
-    for (let i = 1; i <= count; i++) {
-      const candidate = await contract.methods.getCandidate(i).call();
-      uniquePositions.add(candidate[1]); // position
-    }
+    // Get all positions
+    const positions = await contract.methods.getElectionPositions().call();
+    totalPositionsEl.textContent = positions.length;
 
-    const positions = [...uniquePositions];
+    // Get all candidates and votes
+    let totalVotes = 0;
+    let candidateCount = 0;
+
     resultsContainer.innerHTML = "";
 
-    for (let position of positions) {
+    for (const position of positions) {
       const candidates = await contract.methods
         .getCandidatesByPosition(position)
         .call();
+      candidateCount += candidates.length;
 
-      const labels = candidates.map((c) => c.name);
-      const data = candidates.map((c) => parseInt(c.voteCount));
+      // Calculate total votes for this position
+      const positionVotes = candidates.reduce(
+        (sum, candidate) => sum + parseInt(candidate.voteCount),
+        0
+      );
+      totalVotes += positionVotes;
 
-      const chartCard = document.createElement("div");
-      chartCard.classList.add("chart-card", "fade-in");
+      // Get winner - handle the tuple response properly
+      const winnerInfo = await contract.methods
+        .getWinnerByPosition(position)
+        .call();
+      const winnerName = winnerInfo[0];
+      const winnerVotes = winnerInfo[1];
 
-      const title = document.createElement("h3");
-      title.classList.add("chart-title");
-      title.textContent = `Results`;
-      const positionTag = document.createElement("span");
-      positionTag.classList.add("position-tag");
-      positionTag.textContent = position;
-      title.appendChild(positionTag);
-      chartCard.appendChild(title);
+      // Create position card
+      const positionCard = document.createElement("div");
+      positionCard.className = "position-card fade-in";
 
-      const winner = candidates.reduce(
-        (max, c) => (c.voteCount > max.voteCount ? c : max),
-        candidates[0]
+      positionCard.innerHTML = `
+                <div class="position-header">
+                    <h2 class="position-title">${position}</h2>
+                    <div class="position-winner">
+                        <span class="winner-icon">👑</span>
+                        <div>
+                            <div class="winner-name">${winnerName}</div>
+                            <div class="winner-votes">${winnerVotes} votes</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="candidates-grid" id="candidates-${position.replace(
+                  /\s+/g,
+                  "-"
+                )}"></div>
+                <div class="chart-container">
+                    <canvas id="chart-${position.replace(
+                      /\s+/g,
+                      "-"
+                    )}"></canvas>
+                </div>
+            `;
+
+      resultsContainer.appendChild(positionCard);
+
+      // Add candidates
+      const candidatesGrid = document.getElementById(
+        `candidates-${position.replace(/\s+/g, "-")}`
       );
 
-      const winnerDisplay = document.createElement("div");
-      winnerDisplay.classList.add("winner-display");
+      candidates.forEach((candidate) => {
+        const percentage =
+          positionVotes > 0
+            ? Math.round((candidate.voteCount / positionVotes) * 100)
+            : 0;
 
-      const trophyIcon = document.createElement("div");
-      trophyIcon.classList.add("trophy");
-      trophyIcon.innerHTML = "🏆";
-      winnerDisplay.appendChild(trophyIcon);
+        const candidateCard = document.createElement("div");
+        candidateCard.className = "candidate-card fade-in";
 
-      const winnerInfo = document.createElement("div");
-      winnerInfo.classList.add("winner-info");
+        candidateCard.innerHTML = `
+                    <div class="candidate-header">
+                        <img src="${
+                          candidate.imageUrl ||
+                          "https://via.placeholder.com/150"
+                        }" alt="${candidate.name}" class="candidate-image">
+                        <div>
+                            <div class="candidate-name">${candidate.name}</div>
+                            <div class="candidate-position">${
+                              candidate.position
+                            }</div>
+                        </div>
+                    </div>
+                    <div class="candidate-description">${
+                      candidate.description || "No description provided"
+                    }</div>
+                    <div class="candidate-votes">
+                        <div class="vote-count">${
+                          candidate.voteCount
+                        } votes</div>
+                        <div class="vote-percentage">${percentage}%</div>
+                    </div>
+                `;
 
-      const winnerName = document.createElement("div");
-      winnerName.classList.add("winner-name");
-      winnerName.textContent = winner.name;
-      winnerInfo.appendChild(winnerName);
-
-      const winnerVotes = document.createElement("div");
-      winnerVotes.classList.add("winner-votes");
-      winnerVotes.textContent = `Total Votes: ${winner.voteCount}`;
-      winnerInfo.appendChild(winnerVotes);
-
-      winnerDisplay.appendChild(winnerInfo);
-      chartCard.appendChild(winnerDisplay);
-
-      const canvasContainer = document.createElement("div");
-      canvasContainer.classList.add("chart-container");
-      const canvas = document.createElement("canvas");
-      canvasContainer.appendChild(canvas);
-      chartCard.appendChild(canvasContainer);
-
-      resultsContainer.appendChild(chartCard);
-
-      new Chart(canvas.getContext("2d"), {
-        type: "pie",
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: `Votes for ${position}`,
-              data: data,
-              backgroundColor: generateColors(labels.length),
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          animation: {
-            animateRotate: true,
-            animateScale: true,
-            duration: 1500,
-            easing: "easeOutBounce",
-          },
-          plugins: {
-            legend: {
-              position: "bottom",
-            },
-            tooltip: {
-              callbacks: {
-                label: function (context) {
-                  const label = context.label || "";
-                  const value = context.raw || 0;
-                  const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                  const percentage = Math.round((value / total) * 100);
-                  return `${label}: ${value} votes (${percentage}%)`;
-                },
-              },
-            },
-          },
-          onClick: (e) => {
-            const points = e.chart.getElementsAtEventForMode(
-              e,
-              "nearest",
-              { intersect: true },
-              true
-            );
-            if (points.length) {
-              const firstPoint = points[0];
-              const label = e.chart.data.labels[firstPoint.index];
-              const value =
-                e.chart.data.datasets[firstPoint.datasetIndex].data[
-                  firstPoint.index
-                ];
-              createConfetti(e.event.x, e.event.y);
-            }
-          },
-        },
+        candidatesGrid.appendChild(candidateCard);
       });
 
-      // Animate the winner card
-      animateWinnerCard(winnerDisplay);
+      // Create chart
+      createChart(
+        `chart-${position.replace(/\s+/g, "-")}`,
+        position,
+        candidates.map((c) => c.name),
+        candidates.map((c) => c.voteCount)
+      );
     }
-  } catch (err) {
-    console.error("Failed to load election results:", err);
-    resultsContainer.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: var(--error-red)">Error loading results. Please try again.</div>`;
+
+    totalVotesEl.textContent = totalVotes;
+    totalCandidatesEl.textContent = candidateCount;
+  } catch (error) {
+    console.error("Error loading election data:", error);
+    showError("Failed to load election data. Please try again later.");
   }
 }
 
-function generateColors(count) {
+// Create Chart
+function createChart(canvasId, position, labels, data) {
+  const ctx = document.getElementById(canvasId).getContext("2d");
   const colors = [
     "#1A5276",
     "#E67E22",
@@ -284,17 +220,109 @@ function generateColors(count) {
     "#2C3E50",
     "#8E44AD",
   ];
-  return Array.from({ length: count }, (_, i) => colors[i % colors.length]);
+
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: `Votes for ${position}`,
+          data: data,
+          backgroundColor: colors.slice(0, labels.length),
+          borderColor: colors.slice(0, labels.length),
+          borderWidth: 1,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false,
+        },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              return `${context.dataset.label}: ${context.raw} votes`;
+            },
+          },
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            precision: 0,
+          },
+        },
+      },
+      animation: {
+        duration: 1500,
+        easing: "easeOutQuart",
+      },
+    },
+  });
+}
+
+// Update Voting Status
+function updateVotingStatus(isOpen) {
+  if (isOpen) {
+    votingStatus.classList.add("open");
+    votingStatusText.textContent = "Voting: Open";
+  } else {
+    votingStatus.classList.remove("open");
+    votingStatusText.textContent = "Voting: Closed";
+  }
+}
+
+// Show Error
+function showError(message) {
+  resultsContainer.innerHTML = `<div class="error-message">${message}</div>`;
+}
+
+// Create Confetti Effect
+function createConfetti() {
+  confettiContainer.innerHTML = "";
+  const colors = [
+    "#1A5276",
+    "#E67E22",
+    "#27AE60",
+    "#F1C40F",
+    "#3498DB",
+    "#E74C3C",
+  ];
+
+  for (let i = 0; i < 100; i++) {
+    const confetti = document.createElement("div");
+    confetti.className = "confetti";
+    confetti.style.left = `${Math.random() * 100}vw`;
+    confetti.style.backgroundColor =
+      colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.width = `${Math.random() * 8 + 4}px`;
+    confetti.style.height = confetti.style.width;
+    confetti.style.animation = `confetti-fall ${
+      Math.random() * 3 + 2
+    }s linear forwards`;
+    confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+    confettiContainer.appendChild(confetti);
+  }
+
+  setTimeout(() => {
+    confettiContainer.innerHTML = "";
+  }, 3000);
 }
 
 // Event Listeners
-refreshBtn.addEventListener("click", () => {
-  refreshBtn.classList.add("rotate");
-  loadResults().finally(() => {
-    setTimeout(() => {
-      refreshBtn.classList.remove("rotate");
-    }, 500);
-  });
-});
+connectButton.addEventListener("click", connectWallet);
 
-window.addEventListener("load", loadContract);
+// Initialize
+window.addEventListener("load", async () => {
+  await loadABI();
+
+  // Check if already connected
+  if (window.ethereum && window.ethereum.selectedAddress) {
+    connectWallet();
+  }
+});
